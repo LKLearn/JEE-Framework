@@ -2,7 +2,7 @@
 
 ##Docker 简介
 
-![Dcoker简介图](/images/Docker简介.png)
+![Dcoker简介图](images/Docker简介.png)
 
 
 
@@ -38,7 +38,7 @@ Docker使用的分层存数以及镜像的技术，使得应用重复部分的�
 
 
 
-![Docker架构图](/images/架构图.png)
+![Docker架构图](images/架构图.png)
 
 
 
@@ -76,7 +76,7 @@ Docker Registry 分公开仓库和私有仓库，类似于Maven 的共有仓库 
 
 
 
-Dcoker学习地址[链接地址]（https://www.runoob.com/docker/docker-architecture.html）  
+Dcoker学习地址[链接地址](https://www.runoob.com/docker/docker-architecture.html )
 
 
 
