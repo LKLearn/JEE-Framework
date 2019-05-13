@@ -1,0 +1,8 @@
+安装完了docker之后，在启动的过程中，可能会碰到启动docker容器报错的问题，此时在根目录下添加 etc/docker/daemon.json 文件，没有的就创建目录及文件
+并在中添加如下内容：前面2个键值对是来解决此问题，后面的键值对是来解决pull 应用慢的问题（使用的是阿里云的仓库地址）
+
+{
+    "graph": "/mnt/docker-data",
+    "storage-driver": "overlay",
+    "registry-mirrors": ["http://yq.aliyn.com/articles/29941"]
+}

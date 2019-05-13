@@ -1,0 +1,10 @@
+关于@SpringBootTest注解中的 java 类名上的 
+@RunWith(SpringRunner.class)
+@SpringBootTest
+
+这2个注解，以及和@Autowired  的装配属性中 的问题描述
+
+****************************************************************************
+
+1.idea 中的 关于编译的 报错提示问题
+2.test类与被装配的属性要处于同一目录

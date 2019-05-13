@@ -1,0 +1,6 @@
+注意：指定文件的时候，classpath:    后面不要接空格(第一行是正确的，第二行启动会报错)
+
+
+schema:
+      - classpath:sql/department.sql
+      - classpath: employee.sql
