@@ -2098,7 +2098,7 @@ ZipKin 是一个开放源代码的分布式跟踪系统，由 Twitter 公司开�
 
 随着服务的越来越多，对调用链的分析会越来越复杂。它们之间的调用关系也许如下：
 
-![img](/SpringCloud-img/last010.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last010.png?raw=true)
 
 
 
