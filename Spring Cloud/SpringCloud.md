@@ -377,7 +377,9 @@ Eureka Server 是有界面的，启动工程，打开浏览器访问：
 
 http://localhost:8761
 
-![img](../SpringCloud-img/last023.png)
+
+
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last023.png?raw=true)
 
 
 
@@ -506,7 +508,7 @@ public class AdminController {
 
  启动工程，打开 http://localhost:8761 ，即 Eureka Server 的网址：
 
-![img](/SpringCloud-img/last022.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last022.png?raw=true)
 
 你会发现一个服务已经注册在服务中了，服务名为 `HELLO-SPRING-CLOUD-SERVICE-ADMIN` ,端口为 `8762`
 
@@ -535,7 +537,7 @@ Ribbon 是一个负载均衡客户端，可以很好的控制 `http` 和 `tcp` �
 - 启动服务提供者（案例工程为：`hello-spring-cloud-service-admin`），端口号为：`8762`
 - 修改配置文件的端口号为：`8763`，启动后在 Eureka 中会注册两个实例，这相当于一个小集群
 
-![img](/SpringCloud-img/last021.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last021.png?raw=true)
 
 ### 创建服务消费者
 
@@ -769,7 +771,7 @@ Hi，your message is :"HelloRibbon" i am from port：8763
 
 #### 此时的架构
 
-![img](/SpringCloud-img/last020.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last020.png?raw=true)
 
 - 一个服务注册中心，Eureka Server，端口号为：`8761`
 - `service-admin` 工程运行了两个实例，端口号分别为：`8762`，`8763`
@@ -784,13 +786,13 @@ Hi，your message is :"HelloRibbon" i am from port：8763
 
 点击 `Run -> Edit Configurations...`
 
-![img](/SpringCloud-img/last019.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last019.png?raw=true)
 
 #### 步骤二
 
 选择需要启动多实例的项目并去掉 `Single instance only` 前面的勾
 
-![img](/SpringCloud-img/last018.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last018.png?raw=true)
 
 #### 步骤三
 
@@ -1017,11 +1019,13 @@ Hi，your message is :"HelloFeign" i am from port：8763
 
 Netflix 开源了 Hystrix 组件，实现了熔断器模式，Spring Cloud 对这一组件进行了整合。在微服务架构中，一个请求需要调用多个服务是非常常见的，如下图：  
 
-![img](/SpringCloud-img/last017.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last017.png?raw=true)
 
 ​	较底层的服务如果出现故障，会导致连锁故障。当对特定的服务的调用的不可用达到一个阀值（Hystrix 是 **5 秒 20 次**） 熔断器将会被打开  
 
-![img](/SpringCloud-img/last016.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last016.png?raw=true)
+
+
 
 熔断器打开后，为了避免连锁故障，通过 `fallback` 方法可以直接返回一个固定值。
 
@@ -1224,11 +1228,13 @@ public class HystrixDashboardConfiguration {
 
 浏览器端访问 http://localhost:8764/hystrix 界面如下：
 
-![img](/SpringCloud-img/last015.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last015.png?raw=true)
 
 点击 Monitor Stream，进入下一个界面，访问 http://localhost:8764/hi?message=HelloRibbon 此时会出现监控界面：  
 
-![img](/SpringCloud-img/last014.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last014.png?raw=true)
+
+
 
 ### Hystrix说明
 
@@ -1257,7 +1263,9 @@ fallback() 在什么情况下会抛异常
 
 Hystrix dashborad 界面参数 介绍
 
-![img](/SpringCloud-img/last013.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last013.png?raw=true)
+
+
 
 ### Hystrix 常用配置
 
@@ -1300,7 +1308,7 @@ Hystrix dashborad 界面参数 介绍
 
 在微服务架构中，需要几个基础的服务治理组件，包括服务注册与发现、服务消费、负载均衡、熔断器、智能路由、配置管理等，由这几个基础组件相互协作，共同组建了一个简单的微服务系统。一个简单的微服务系统如下图：  
 
-![img](/SpringCloud-img/last012.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last012.png?raw=true)
 
 在 Spring Cloud 微服务系统中，一种常见的负载均衡方式是，客户端的请求首先经过负载均衡（Zuul、Ngnix），再到达服务网关（Zuul 集群），然后再到具体的服。服务统一注册到高可用的服务注册中心集群，服务的所有的配置文件由配置服务管理，配置服务的配置文件放在 GIT 仓库，方便开发人员随时改配置  
 
@@ -2086,7 +2094,7 @@ ZipKin 是一个开放源代码的分布式跟踪系统，由 Twitter 公司开�
 
 微服务架构是通过业务来划分服务的，使用 REST 调用。对外暴露的一个接口，可能需要很多个服务协同才能完成这个接口功能，如果链路上任何一个服务出现问题或者网络超时，都会形成导致接口调用失败。随着业务的不断扩张，服务之间互相调用会越来越复杂。
 
-![img](/SpringCloud-img/last011.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last011.png?raw=true)
 
 随着服务的越来越多，对调用链的分析会越来越复杂。它们之间的调用关系也许如下：
 
@@ -2106,7 +2114,7 @@ ZipKin 是一个开放源代码的分布式跟踪系统，由 Twitter 公司开�
 
 将 Span 和 Trace 在一个系统中使用 Zipkin 注解的过程图形化：
 
-![img](/SpringCloud-img/last008.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last008.png?raw=true)
 
 
 
@@ -2279,17 +2287,17 @@ spring:
 
 启动全部项目，打开浏览器访问：http://localhost:9411/ 会出现以下界面：
 
-![img](/SpringCloud-img/last007.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last007.png?raw=true)
 
 **刷新之前项目中的全部测试接口（刷多几次）**
 
 点击 `Find a trace`，可以看到具体服务相互调用的数据
 
-![img](/SpringCloud-img/last006.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last006.png?raw=true)
 
 点击 `Dependencies`，可以发现服务的依赖关系
 
-![img](/SpringCloud-img/last005.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last005.png?raw=true)
 
 至此就代表 ZipKin 配置成功
 
@@ -2476,7 +2484,7 @@ management:
 
 打开浏览器访问：http://localhost:8084 会出现以下界面
 
-![img](/SpringCloud-img/last004.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last004.png?raw=true)
 
 #### 创建Spring Boot Admin Client
 
@@ -2633,13 +2641,13 @@ spring:
 
 依次启动两个应用，打开浏览器访问：http://localhost:8084 界面显示如下
 
-![img](/SpringCloud-img/last003.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/last003.png?raw=true)
 
 从图中可以看到，我们的 Admin Client 已经上线了，至此说明监控中心搭建成功
 
 #### WallBorad
 
-![img](/SpringCloud-img/WallBoard.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/WallBoard.png?raw=true)
 
 
 
@@ -2647,7 +2655,7 @@ spring:
 
 #### journal
 
-![img](/SpringCloud-img/journal.png)
+![img](https://github.com/LKLearn/JEE-Framework/blob/master/Spring%20Cloud/SpringCloud-img/journal.png?raw=true)
 
 
 
