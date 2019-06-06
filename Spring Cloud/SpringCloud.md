@@ -377,7 +377,7 @@ Eureka Server 是有界面的，启动工程，打开浏览器访问：
 
 http://localhost:8761
 
-![img](/SpringCloud-img/last023.png)
+![img](../SpringCloud-img/last023.png)
 
 
 
