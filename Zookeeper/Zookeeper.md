@@ -6,7 +6,7 @@
 
 分布式协调技术主要是解决分布式环境中多个服务之间的同步控制问题，让他们有序的访问某种临界资源，以防止脏数据的产生。
 
-![](/Zookeeper-img/001.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/001.png?raw=true)
 
 在这图中有三台机器，每台机器各跑一个应用程序。然后我们将这三台机器通过网络将其连接起来，构成一个系统来为用户提供服务，对用户来说这个系统的架构是透明的，他感觉不到我这个系统是一个什么样的架构。那么我们就可以把这种系统称作一个**分布式系统**。
 
@@ -18,7 +18,7 @@
 
 ## 为什么要使用分布式锁
 
-![](/Zookeeper-img/002.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/002.png?raw=true)
 
 - 成员变量 A 存在 JVM1、JVM2、JVM3 三个 JVM 内存中
 - 成员变量 A 同时都会在 JVM 分配一块内存，三个请求发过来同时对这个变量操作，显然结果是不对的
@@ -95,11 +95,11 @@ if（setnx（lock_sale_商品ID，1） == 1）{
 
 设想一个极端场景，当某线程执行 `setnx`，成功得到了锁：
 
-![](/Zookeeper-img/003.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/003.png?raw=true)
 
 `setnx` 刚执行成功，还未来得及执行 `expire` 指令，节点 1 挂掉了。
 
-![](/Zookeeper-img/004.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/004.png?raw=true)
 
 这样一来，这把锁就没有设置过期时间，变成**死锁**，别的线程再也无法获得锁了。
 
@@ -115,15 +115,15 @@ set（lock_sale_商品ID，1，30，NX）
 
 又是一个极端场景，假如某线程成功得到了锁，并且设置的超时时间是 30 秒。
 
-![](/Zookeeper-img/005.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/005.png?raw=true)
 
 如果某些原因导致线程 A 执行的很慢很慢，过了 30 秒都没执行完，这时候锁过期自动释放，线程 B 得到了锁。
 
-![](/Zookeeper-img/006.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/006.png?raw=true)
 
 随后，线程 A 执行完了任务，线程 A 接着执行 `del` 指令来释放锁。但这时候线程 B 还没执行完，线程A实际上 `删除的是线程 B 加的锁`。
 
-![](/Zookeeper-img/007.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/007.png?raw=true)
 
 怎么避免这种情况呢？可以在 `del` 释放锁之前做一个判断，验证当前的锁是不是自己加的锁。至于具体的实现，可以在加锁的时候把当前的线程 ID 当做 `value`，并在删除之前验证 `key` 对应的 `value` 是不是自己线程的 ID。
 
@@ -148,19 +148,19 @@ if（threadId .equals(redisClient.get(key))）{
 
 还是刚才第二点所描述的场景，虽然我们避免了线程 A 误删掉 `key` 的情况，但是同一时间有 A，B 两个线程在访问代码块，仍然是不完美的。怎么办呢？我们可以让获得锁的线程开启一个**守护线程**，用来给快要过期的锁“续航”。
 
-![](/Zookeeper-img/008.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/008.png?raw=true)
 
 当过去了 29 秒，线程 A 还没执行完，这时候守护线程会执行 `expire` 指令，为这把锁“续命”20 秒。守护线程从第 29 秒开始执行，每 20 秒执行一次。
 
-![](/Zookeeper-img/009.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/009.png?raw=true)
 
 当线程 A 执行完任务，会显式关掉守护线程。
 
-![](/Zookeeper-img/010.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/010.png?raw=true)
 
 另一种情况，如果节点 1 忽然断电，由于线程 A 和守护线程在同一个进程，守护线程也会停下。这把锁到了超时的时候，没人给它续命，也就自动释放了。
 
-![](/Zookeeper-img/011.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/011.png?raw=true)
 
 
 
@@ -174,7 +174,7 @@ ZooKeeper 是一种分布式协调服务，用于管理大型主机。在分布�
 
 Zookeeper 的数据模型是什么样子呢？它很像数据结构当中的树，也很像文件系统的目录。
 
-![](/Zookeeper-img/012.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/012.png?raw=true)
 
 树是由节点所组成，Zookeeper 的数据存储也同样是基于节点，这种节点叫做 **Znode**
 
@@ -189,7 +189,7 @@ Zookeeper 的数据模型是什么样子呢？它很像数据结构当中的树�
 
 ### Znode 包含哪些元素
 
-![](/Zookeeper-img/013.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/013.png?raw=true)
 
 - data：Znode 存储的数据信息。
 - ACL：记录 Znode 的访问权限，即哪些人或哪些 IP 可以访问本节点。
@@ -253,18 +253,18 @@ getChildren
 
   ​
 
-  ![](/Zookeeper-img/014.png)
+  ![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/014.png?raw=true)
 
   - 当被 Watch 的 Znode 已删除，服务端会查找哈希表，找到该 Znode 对应的所有 Watcher，异步通知客户端，并且删除哈希表中对应的 Key-Value。
   - ​
 
-![](/Zookeeper-img/015.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/015.png?raw=true)
 
 ### Zookeeper 的一致性
 
 Zookeeper 身为分布式系统协调服务，如果自身挂了如何处理呢？为了防止单机挂掉的情况，Zookeeper 维护了一个集群。如下图：
 
-![](/Zookeeper-img/016.jpg)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/016.jpg?raw=true)
 
 Zookeeper Service 集群是一主多从结构。
 
@@ -296,19 +296,19 @@ Zookeeper Atomic Broadcast，有效解决了 Zookeeper 集群崩溃恢复，以�
 
 选举阶段，此时集群中的节点处于 Looking 状态。它们会各自向其他节点发起投票，投票当中包含自己的服务器 ID 和最新事务 ID（ZXID）。
 
-![](/Zookeeper-img/017.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/017.png?raw=true)
 
 
 
 接下来，节点会用自身的 ZXID 和从其他节点接收到的 ZXID 做比较，如果发现别人家的 ZXID 比自己大，也就是数据比自己新，那么就重新发起投票，投票给目前已知最大的 ZXID 所属节点。
 
-![](/Zookeeper-img/018.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/018.png?raw=true)
 
 
 
 每次投票后，服务器都会统计投票数量，判断是否有某个节点得到半数以上的投票。如果存在这样的节点，该节点将会成为准 Leader，状态变为 Leading。其他节点的状态变为 Following。
 
-![](/Zookeeper-img/019.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/019.png?raw=true)
 
 **Discovery**
 
@@ -338,7 +338,7 @@ ZAB 的数据写入涉及到 Broadcast 阶段，简单来说，就是 Zookeeper 
 - Follower 接到 Propose 消息，写入日志成功后，返回 ACK 消息给 Leader。
 - Leader 接到半数以上ACK消息，返回成功给客户端，并且广播 Commit 请求给 Follower
 
-![](/Zookeeper-img/020.jpg)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/020.jpg?raw=true)
 
 ZAB 协议既不是强一致性，也不是弱一致性，而是处于两者之间的**单调一致性（顺序一致性）**。它依靠事务 ID 和版本号，保证了数据的更新和读取是有序的。
 
@@ -364,7 +364,7 @@ Redis 的分布式解决方案 Codis，就利用了 Zookeeper 来存放数据路
 
 ### 什么是临时顺序节点
 
-![](/Zookeeper-img/021.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/021.png?raw=true)
 
 Zookeeper 的数据存储结构就像一棵树，这棵树由节点组成，这种节点叫做 Znode。
 
@@ -378,17 +378,17 @@ Znode 分为四种类型：
 
 所谓顺序节点，就是在创建节点时，Zookeeper 根据创建的时间顺序给该节点名称进行编号：
 
-![](/Zookeeper-img/022.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/022.png?raw=true)
 
 #### 临时节点（EPHEMERAL）
 
 和持久节点相反，当创建节点的客户端与 Zookeeper 断开连接后，临时节点会被删除：
 
-![](/Zookeeper-img/023.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/023.png?raw=true)
 
-![](/Zookeeper-img/024.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/024.png?raw=true)
 
-![](/Zookeeper-img/025.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/025.png?raw=true)
 
 #### 临时顺序节点（EPHEMERAL_SEQUENTIAL）
 
@@ -402,31 +402,31 @@ Zookeeper 分布式锁恰恰应用了临时顺序节点。具体如何实现呢�
 
 首先，在 Zookeeper 当中创建一个持久节点 ParentLock。当第一个客户端想要获得锁时，需要在 ParentLock 这个节点下面创建一个**临时顺序节点** Lock1。
 
-![](/Zookeeper-img/026.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/026.png?raw=true)
 
 
 
 之后，Client1 查找 ParentLock 下面所有的临时顺序节点并排序，判断自己所创建的节点 Lock1 是不是顺序最靠前的一个。如果是第一个节点，则成功获得锁。
 
-![](/Zookeeper-img/027.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/027.png?raw=true)
 
 这时候，如果再有一个客户端 Client2 前来获取锁，则在 ParentLock 下载再创建一个临时顺序节点 Lock2。
 
-![](/Zookeeper-img/028.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/028.png?raw=true)
 
 Client2 查找 ParentLock 下面所有的临时顺序节点并排序，判断自己所创建的节点 Lock2 是不是顺序最靠前的一个，结果发现节点 Lock2 并不是最小的。
 
 于是，Client2 向排序仅比它靠前的节点 Lock1 注册 Watcher，用于监听 Lock1 节点是否存在。这意味着 Client2 抢锁失败，进入了等待状态。
 
-![](/Zookeeper-img/029.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/029.png?raw=true)
 
-这时候，如果又有一个客户端 Client3 前来获取锁，则在 ParentLock 下载再创建一个临时顺序节点 Lock3。![](/Zookeeper-img/030.png)
+这时候，如果又有一个客户端 Client3 前来获取锁，则在 ParentLock 下载再创建一个临时顺序节点 Lock3。![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/030.png?raw=true)
 
 Client3 查找 ParentLock 下面所有的临时顺序节点并排序，判断自己所创建的节点 Lock3 是不是顺序最靠前的一个，结果同样发现节点 Lock3 并不是最小的。
 
 于是，Client3 向排序仅比它靠前的节点 Lock2 注册 Watcher，用于监听 Lock2 节点是否存在。这意味着 Client3 同样抢锁失败，进入了等待状态。
 
-![](/Zookeeper-img/031.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/031.png?raw=true)
 
 这样一来，Client1 得到了锁，Client2 监听了 Lock1，Client3 监听了 Lock2。这恰恰形成了一个等待队列，
 
@@ -438,27 +438,27 @@ Client3 查找 ParentLock 下面所有的临时顺序节点并排序，判断自
 
 当任务完成时，Client1 会显示调用删除节点 Lock1 的指令。
 
-![](/Zookeeper-img/032.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/032.png?raw=true)
 
 #### 任务执行过程中，客户端崩溃
 
-获得锁的 Client1 在任务执行过程中，如果崩溃，则会断开与 Zookeeper 服务端的链接。根据临时节点的特性，相关联的节点 Lock1 会随之自动删除。![](/Zookeeper-img/033.png)
+获得锁的 Client1 在任务执行过程中，如果崩溃，则会断开与 Zookeeper 服务端的链接。根据临时节点的特性，相关联的节点 Lock1 会随之自动删除。![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/033.png?raw=true)
 
 由于 Client2 一直监听着 Lock1 的存在状态，当 Lock1 节点被删除，Client2 会立刻收到通知。这时候 Client2 会再次查询 ParentLock 下面的所有节点，确认自己创建的节点 Lock2 是不是目前最小的节点。如果是最小，则 Client2 顺理成章获得了锁。
 
-![](/Zookeeper-img/034.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/034.png?raw=true)
 
 同理，如果 Client2 也因为任务完成或者节点崩溃而删除了节点 Lock2，那么 Client3 就会接到通知。
 
-![](/Zookeeper-img/035.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/035.png?raw=true)
 
 最终，Client3 成功得到了锁。
 
-![](/Zookeeper-img/036.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/036.png?raw=true)
 
 ### Zookeeper 和 Redis 分布式锁的比较
 
-![](/Zookeeper-img/037.jpg)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Zookeeper/Zookeeper-img/037.jpg?raw=true)
 
 
 
