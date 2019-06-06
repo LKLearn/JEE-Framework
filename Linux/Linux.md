@@ -78,11 +78,13 @@ XShell 可以在 Windows 界面下用来访问远端不同系统下的服务器�
 
 效果图如下：
 
-![](/Linux-img/001.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/001.png?raw=true)
+
+
 
 ## Linux 目录结构
 
-![](/Linux-img/002.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/002.png?raw=true)
 
 | 目录   | 说明                                       |
 | ---- | ---------------------------------------- |
@@ -471,7 +473,6 @@ service ssh restart
 
 - 密码：
 
-   
 
   经过加密，虽然加密，但不表示不会被破解，该文件默认权限如下：
 
@@ -1069,23 +1070,23 @@ lower-case-table-names = 1
 
 ### `df -h`（查看挂载点）
 
-![](/Linux-img/003.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/003.png?raw=true)
 
 ### `lvdisplay`（显示当前的 logical volume）
 
-![](/Linux-img/004.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/004.png?raw=true)
 
 **备注：** 注意这里目前有两个，一个是文件系统所在的 `volume`，另一个是 `swap` 分区使用的 `volume`，当然，我们需要扩容的是第一个
 
 ### `vgdisplay`（显示当前的 volume group）
 
-![](/Linux-img/005.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/005.png?raw=true)
 
 ​	**备注：** 注意 `VG SIZE`，这里应该是你当前的可用空间大小，待扩容完毕，这里显示的应该是最终的大小
 
 ### `pvdisplay`（显示当前的 physical volume）
 
-![](/Linux-img/006.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/006.png?raw=true)
 
 ## 开始 LVM 扩容
 
@@ -1095,11 +1096,11 @@ lower-case-table-names = 1
 fdisk -l
 ```
 
-![](/Linux-img/007.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/007.png?raw=true)
 
 因为这台机器默认开启了 LVM，所以目前有一个 `extended` 分区和一个 `LVM` 分区，并且他们是完全重叠的。这是因为，LVM 分区作为一个虚拟的分区，完全占用了这个 extended 分区，原理图见下：
 
-![](/Linux-img/008.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/008.png?raw=true)
 
 因此，现在需要做的就是将 extended partition (`sda2`) 扩展到最大，然后创建一个新的 LVM logical partition (`sda6`)，用它来填满 sda2
 
@@ -1111,11 +1112,11 @@ fdisk -l |grep '/dev'
 
 #### 1 块磁盘效果图
 
-![](/Linux-img/009.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/009.png?raw=true)
 
 #### 2 块磁盘效果图（新增磁盘，尚未挂载）
 
-![](/Linux-img/010.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/010.png?raw=true)
 
 ### 创建 `sdb` 分区
 
@@ -1125,7 +1126,7 @@ n	# 新建分区
 l	# 选择逻辑分区，如果没有，则首先创建扩展分区（p），然后再添加逻辑分区（硬盘：最多四个分区 P-P-P-P 或 P-P-P-E）
 ```
 
-![](/Linux-img/011.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/011.png?raw=true)
 
 ```
 回车
@@ -1136,13 +1137,13 @@ w	# 写入磁盘分区
 
 ### 格式化磁盘
 
-![](/Linux-img/012.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/012.png?raw=true)
 
 ```
 mkfs -t ext4 /dev/sdb1
 ```
 
-![](/Linux-img/013.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/013.png?raw=true)
 
 ### 创建 PV
 
@@ -1156,7 +1157,7 @@ pvcreate /dev/sdb1
 pvscan
 ```
 
-![](/Linux-img/014.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/014.png?raw=true)
 
 ### 扩容 VG
 
@@ -1164,7 +1165,7 @@ pvscan
 vgdisplay
 ```
 
-![](/Linux-img/015.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/015.png?raw=true)
 
 ```
 vgextend ubuntu-vg /dev/sdb1
@@ -1172,9 +1173,9 @@ vgextend ubuntu-vg /dev/sdb1
 
 ### 扩容 LV
 
-![](/Linux-img/016.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/016.png?raw=true)
 
-![](/Linux-img/017.png)
+![](https://github.com/LKLearn/JEE-Framework/blob/master/Linux/Linux-img/017.png?raw=true)
 
 ```
 lvextend -L +30G /dev/ubuntu-vg/root
